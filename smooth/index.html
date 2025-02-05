@@ -269,69 +269,6 @@
       }
     </script>
 
-    <script>
-      const minpos = 0;
-      const maxpos = 1000;
-      const minval = Math.log(0.6);
-      const maxval = Math.log(15);
-      const scale = (maxval - minval) / (maxpos - minpos);
-      const adjustedPosition = value =>
-        Number(minpos + (Math.log(value) - minval) / scale).toFixed(2);
-      const adjustedValue = position =>
-        Number(Math.exp((position - minpos) * scale + minval)).toFixed(2);
 
-      const editableBox = document.getElementById('editable');
-
-      const editableBoxBackground = document.getElementById('background');
-      editableBox.style.background = editableBoxBackground.value;
-
-      const assymetricalToggle = document.getElementById('assymetricalToggle');
-      let isAssymetric = false;
-
-      const rangeX = document.getElementById('rangeX');
-      const rangeY = document.getElementById('rangeY');
-
-      const valueX = document.getElementById('valueX');
-      const valueY = document.getElementById('valueY');
-      const valueCSS = document.getElementById('valueCSS');
-
-      const values = { X: 4, Y: 4 };
-
-      console.log(adjustedPosition(4));
-
-      assymetricalToggle.addEventListener('input', e => {
-        isAssymetric = e.target.checked;
-        if (!isAssymetric) rangeY.setAttribute('disabled', 'true');
-        else rangeY.removeAttribute('disabled');
-      });
-
-      editableBoxBackground.addEventListener('input', e => {
-        editableBox.style.background = e.target.value;
-      });
-
-      rangeX.addEventListener('input', e => {
-        const value = e.target.value;
-        values.X = adjustedValue(value);
-        const sliderValue = Object.values(values).join(',');
-        editableBox.style.setProperty('--smooth-corners', sliderValue);
-        valueX.innerHTML = `X = ${values.X}`;
-
-        if (!isAssymetric) {
-          values.Y = values.X;
-          valueY.innerHTML = `Y = ${values.Y}`;
-          rangeY.value = adjustedPosition(values.Y);
-          valueCSS.innerHTML = values.X.toString();
-        } else valueCSS.innerHTML = sliderValue;
-      });
-
-      rangeY.addEventListener('input', e => {
-        const value = e.target.value;
-        values.Y = adjustedValue(value);
-        const sliderValue = Object.values(values).join(',');
-        editableBox.style.setProperty('--smooth-corners', sliderValue);
-        valueY.innerHTML = `Y = ${values.Y}`;
-        valueCSS.innerHTML = sliderValue;
-      });
-    </script>
   </body>
 </html>
