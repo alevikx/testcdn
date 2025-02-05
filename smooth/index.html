@@ -1,29 +1,43 @@
 <html lang="en">
 <head>
-    <style>
-      .box{
-        width: 200px; 
-        height: 200px;
-        background:red;
-        --smooth-corners:4;
-        mask-image: paint(smooth-corners);
-        -webkit-mask-image: paint(smooth-corners);
-      }
-  </style>
+<style>
+  .box{
+    width: 200px; 
+    height: 200px;
+    background: red;
+  }
+ 
+  
+</style>
 </head>
   <body>
     <section>
-      <div class="box"></div>
+      <div class="box" data-sc-smooth='0.6' data-sc-radius="20"></div>
     </section>
 
     <script>
-      if (CSS && 'paintWorklet' in CSS) CSS.paintWorklet.addModule('paint.js');
-      else {
-        const element = document.getElementsByClassName('paint-api')[0]
-        element.classList.add('no-paint-api');
-        element.classList.remove('paint-api');
+      if(CSS && 'paintWorklet' in CSS){
+         CSS.paintWorklet.addModule('https://alevikx.github.io/testcdn/smooth/qatalog.js');
       }
-    </script>
 
+      document.addEventListener("DOMContentLoaded", function () {
+      const supportsSquircle = CSS.supports("-webkit-mask-image", "paint(squircle)") || CSS.supports("mask-image", "paint(squircle)");
+
+      document.querySelectorAll("[data-sc-smooth][data-sc-radius]").forEach((el) => {
+        const smoothValue = el.getAttribute("data-sc-smooth");
+        const radiusValue = el.getAttribute("data-sc-radius");
+
+      if (supportsSquircle) {
+          el.style.setProperty("-webkit-mask-image", "paint(squircle)");
+          el.style.setProperty("mask-image", "paint(squircle)");
+          el.style.setProperty("--squircle-smooth", smoothValue);
+          el.style.setProperty("--squircle-radius", `${radiusValue}px`);
+          el.style.setProperty("--squircle-corners", "top-left top-right bottom-left bottom-right");
+    } else {
+      el.style.borderRadius = `${radiusValue}px`;
+    }
+  });
+});
+    </script>
 </body>
 </html>
