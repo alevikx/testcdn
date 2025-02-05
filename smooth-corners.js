@@ -39,6 +39,7 @@
         ctx.fill()
     }
 })
+
 */
 
 class SmoothCorners {
